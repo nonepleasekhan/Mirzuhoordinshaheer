@@ -1,0 +1,341 @@
+<script>
+let poems = [
+  {
+    "book": "جنازه فریاد",
+    "title": "1. صدای موج",
+    "content": "بخوان ای موج بی‌پایان دریا\nنفس‌های بلند جان دریا\n\nغزل‌های صدایت زنده سازد\nنشاط عشق در چشمان دریا",
+    "date": ""
+  },
+  {
+    "book": "جنازه فریاد",
+    "title": "2. مستحق تحسینی",
+    "content": "درکتابِ نغز ِ شعر، مستحقِ تحسینی\nتاغزل سُرودستم، مصرعِ نخستینی\n\nچیدنی ورنگینی، ناچشیده شیرینی\nدرهوای سبزِ دل، خوشه‌های پروینی\n\nسِرِ بادِ باغت را، برکسی نخواهم گفت\nتانسیمِ گُل گوید، رازدارِ دیرینی\n\nنبضِ آرزوهایم، می‌زند، تپش دارد\nآزمندِ دیدارت، باحضورِ دل‌بینی\n\nمی‌توانی ای دهقان، بارِ چارفصلِ سال\nاز درختِ حُسن او، تازه تازه برچینی\n\nتابهار می‌آید، تازگی امانت ده\nدسته دسته گل‌ها را، با جهان رنگینی\n\nیک غزل سرودم من، باطراوتِ گل‌ها\nتا غبارِ غم چینم از فضای غمگینی",
+    "date": ""
+  },
+  {
+    "book": "جنازه فریاد",
+    "title": "3. آخرین تحفه",
+    "content": "ای کاش!\nای کاش می‌توانستم ستاره‌های آبی دل را در خطوط موازی منظم سازم\nو آفتابی را در این شب دیجور، روشن کنم...\n\nای کاش! می‌توانستم\nگلی سرخی از باغ آرزوها بچینم...\nتا، در جشن شادیت سهمی کوچکی داشته باشم.\nالآن،\nای کاش!\nاگر از لای خارهایی که بر پاهایم مرهم حنا می‌گذارند،\nاز لای پاهای سرد باورها،\nاز هجوم سکوت اندیشه‌های پوچ،\nو از زیر باران‌هایی که خارها را آب می‌دهند\nگلی یاسی چیده\nبا خیال آغوش، فرش قدم‌هایت نمایم\nبه عنوان آخرین تحفه\nپذیرا شوی!!!",
+    "date": ""
+  },
+  {
+    "book": "جنازه فریاد",
+    "title": "4. چرا",
+    "content": "چرا گفتم نمی‌آیی؟\nنمی‌آیی؟\nچرا گفتم نمی‌مانم؟\nنمی‌مانم؟\n\nچرا با شک و تردید و نگاه تلخ و بی‌لبخند\nبه روی دست‌های من\nدری را باز نگذاشتی؟",
+    "date": ""
+  },
+  {
+    "book": "جنازه فریاد",
+    "title": "5. چه تلخ است",
+    "content": "چه تلخ است\nدل بستن به دروغی شیرین\nچه سخت است\nیاد گرفتن فراموشی در اوج دلتنگی",
+    "date": ""
+  },
+  {
+    "book": "جنازه فریاد",
+    "title": "6. صداقت",
+    "content": "صداقت را نمی‌فهمند آنان\nکه از چشمانشان پرده افترا آویخته است\nو از لبخندشان فریب می‌بارد\nو از کلماتشان خنجر دروغ",
+    "date": ""
+  },
+  {
+    "book": "جنازه فریاد",
+    "title": "7. امید",
+    "content": "امید را باید بغل گرفت\nدر آغوش کشید\nبه حرف‌هایش گوش داد\nو در تاریکی‌ها\nاو را شمع کرد",
+    "date": ""
+  },
+  {
+    "book": "جنازه فریاد",
+    "title": "8. بیداری",
+    "content": "بیدار که می‌شوی\nدنیا همان است\nولی تو فرق کرده‌ای\nو این کافی‌ست برای تغییر مسیرت",
+    "date": ""
+  }
+];
+function saveData() {
+  localStorage.setItem('poemsData', JSON.stringify(poems));
+  renderBooks();
+}
+
+function renderBooks() {
+  const bookSelect = document.getElementById('bookSelect');
+  const books = [...new Set(poems.map(p => p.book))];
+  bookSelect.innerHTML = books.map(b => `<option value="${b}">${b}</option>`).join('');
+  displayPoems(bookSelect.value);
+}
+
+document.getElementById('bookSelect').addEventListener('change', e => {
+  displayPoems(e.target.value);
+});
+
+function displayPoems(book) {
+  const filtered = poems.filter(p => p.book === book);
+  const poemList = document.getElementById('poemList');
+  poemList.innerHTML = filtered.map(p =>
+    `<div class='poem-box'>
+      <h4>${p.title}</h4>
+      <p>${p.content}</p>
+      <small>${p.date}</small>
+    </div>`).join('');
+}
+function showRandomPoem() {
+  const poem = poems[Math.floor(Math.random() * poems.length)];
+  const display = document.getElementById('poemDisplay');
+  display.innerHTML = poem
+    ? `<div class='poem-box'>
+         <h4>${poem.title}</h4>
+         <p>${poem.content}</p>
+         <small>${poem.date}</small>
+       </div>`
+    : '';
+}
+
+function addPoem() {
+  const book = document.getElementById('newBook').value.trim();
+  const title = document.getElementById('newTitle').value.trim();
+  const content = document.getElementById('newContent').value.trim();
+  const date = document.getElementById('newDate').value;
+  if (book && title && content) {
+    poems.push({ book, title, content, date });
+    saveData();
+    alert('شعر ذخیره شد');
+    document.getElementById('newBook').value = '';
+    document.getElementById('newTitle').value = '';
+    document.getElementById('newContent').value = '';
+    document.getElementById('newDate').value = '';
+  }
+}
+function toggleLogin() {
+  document.querySelector('.login-form').style.display = 'block';
+}
+
+function loginAdmin() {
+  const pass = document.getElementById('adminPassword').value;
+  if (pass === 'admin123') {
+    document.getElementById('mainPage').style.display = 'none';
+    document.getElementById('adminPage').style.display = 'block';
+  } else {
+    alert('رمز اشتباه است');
+  }
+}
+
+function logoutAdmin() {
+  document.getElementById('adminPage').style.display = 'none';
+  document.getElementById('mainPage').style.display = 'block';
+}
+
+function searchPoems() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const filtered = poems.filter(p =>
+    p.title.toLowerCase().includes(q) ||
+    p.content.toLowerCase().includes(q) ||
+    p.book.toLowerCase().includes(q)
+  );
+  const poemList = document.getElementById('poemList');
+  poemList.innerHTML = filtered.map(p =>
+    `<div class='poem-box'>
+      <h4>${p.title}</h4>
+      <p>${p.content}</p>
+      <small>${p.date}</small>
+    </div>`).join('');
+}
+function downloadJSON() {
+  const blob = new Blob([JSON.stringify(poems)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'poems.json';
+  a.click();
+}
+
+function uploadJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      poems = JSON.parse(e.target.result);
+      saveData();
+    } catch (err) {
+      alert('فایل معتبر نیست');
+    }
+  };
+  reader.readAsText(file);
+}
+
+window.onload = renderBooks;
+</script>
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مجموعه اشعار میر ظهورالدین شهیر</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;700&display=swap');
+    body {
+      font-family: 'Vazirmatn', sans-serif;
+      background: linear-gradient(to bottom right, #e6f0ff, #ffffff);
+      margin: 0;
+      padding: 0;
+      direction: rtl;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(to left, #6a11cb, #2575fc);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 20px;
+      font-weight: bold;
+      border-bottom: 5px solid #fff;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    .container {
+      max-width: 960px;
+      margin: 20px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    select, input, textarea, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      font-size: 15px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      transition: 0.3s;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #357ab8;
+    }
+
+    .section {
+      background: #f9fbfd;
+      border: 1px solid #dce3ea;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 14px;
+    }
+
+    .poem-box {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 10px 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .poem-box h4 {
+      margin: 0 0 8px 0;
+      color: #2c3e50;
+    }
+
+    .poem-box p {
+      margin: 0;
+      white-space: pre-wrap;
+    }
+
+    .poem-box small {
+      display: block;
+      margin-top: 8px;
+      color: #888;
+    }
+
+    .login-form, .admin-page {
+      display: none;
+    }
+
+    .buttons-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .buttons-group button {
+      flex: 1;
+      min-width: 100px;
+      padding: 8px;
+      font-size: 14px;
+    }
+
+    .upload-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 12px;
+        margin: 10px;
+      }
+      header {
+        font-size: 17px;
+        padding: 14px;
+      }
+      .buttons-group {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    مجموعه اشعار میر ظهورالدین شهیر
+  </header>
+
+  <div class="container" id="mainPage">
+    <div class="section">
+      <label>انتخاب کتاب:</label>
+      <select id="bookSelect"></select>
+    </div>
+
+    <div class="section">
+      <input type="text" id="searchInput" placeholder="جستجو در شعرها..." oninput="searchPoems()">
+    </div>
+
+    <div class="section" id="poemList"></div>
+    <div class="section" id="poemDisplay"></div>
+
+    <div class="section buttons-group">
+      <button onclick="showRandomPoem()">شعر تصادفی</button>
+      <button onclick="window.print()">چاپ</button>
+    </div>
+
+    <div class="section login-form">
+      <input type="password" id="adminPassword" placeholder="رمز ادمین">
+      <button onclick="loginAdmin()">ورود ادمین</button>
+    </div>
+
+    <div class="section upload-controls">
+      <button onclick="toggleLogin()">ورود به بخش ادمین</button>
+      <button onclick="downloadJSON()">📥 دانلود JSON</button>
+      <label for="jsonInput">📤 بارگذاری JSON:</label>
+      <input type="file" id="jsonInput" onchange="uploadJSON(event)">
+    </div>
+  </div>
+  <div class="container admin-page" id="adminPage">
+    <div class="section">
+      <h3>افزودن شعر جدید</h3>
+      <input type="text" id="newBook" placeholder="نام کتاب">
+      <input type="text" id="newTitle" placeholder="عنوان شعر">
+      <textarea id="newContent" placeholder="متن شعر"></textarea>
+      <input type="date" id="newDate">
+      <button onclick="addPoem()">افزودن شعر</button>
+      <button onclick="logoutAdmin()">خروج از پنل ادمین</button>
+    </div>
+  </div>
+</body>
+</html>
